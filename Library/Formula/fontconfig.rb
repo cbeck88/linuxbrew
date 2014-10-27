@@ -21,6 +21,7 @@ class Fontconfig < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'freetype'
+  depends_on 'libpng'
 
   # Reverts commit http://cgit.freedesktop.org/fontconfig/commit/?id=7a6622f25cdfab5ab775324bef1833b67109801b,
   # which breaks caching font directories containing subdirectories
@@ -32,11 +33,12 @@ class Fontconfig < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
+			  "--disable-docs",
                           "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}"
-    system "make", "install", "RUN_FC_CACHE_TEST=false"
+    system "make", "install", "RUN_FC_CACHE_TEST=false", "LIBS=-lpng"
   end
 
   def post_install
