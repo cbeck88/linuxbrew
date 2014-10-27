@@ -37,12 +37,12 @@ class Cairo < Formula
     if build.without? "x11"
       args.delete "--with-x"
       args << "--enable-xlib=no" << "--enable-xlib-xrender=no"
-      args << "--enable-quartz-image"
+      args << "--enable-quartz-image" if os.Mac?
     end
 
     args << "--enable-xcb=no" if MacOS.version <= :leopard
 
     system "./configure", *args
-    system "make install"
+    system "make install CFLAGS='-fno-lto'"
   end
 end
