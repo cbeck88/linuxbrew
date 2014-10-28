@@ -26,6 +26,7 @@ class Pango < Formula
   depends_on 'cairo'
   depends_on 'harfbuzz'
   depends_on 'fontconfig'
+  depends_on 'libpng'
   depends_on :x11 => :recommended
   depends_on 'gobject-introspection'
 
@@ -42,6 +43,7 @@ class Pango < Formula
       --enable-man
       --with-html-dir=#{share}/doc
       --enable-introspection=yes
+      --with-xft
     ]
 
     if build.without? "x11"
@@ -52,7 +54,7 @@ class Pango < Formula
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
-    system "make"
+    system "make", "LIBS=-lpng"
     system "make install"
   end
 
