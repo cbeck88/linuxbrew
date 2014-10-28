@@ -19,11 +19,13 @@ class Harfbuzz < Formula
   depends_on "cairo"
   depends_on "icu4c" => :recommended
   depends_on "freetype"
+  depends_on "libpng"
 
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     args << "--with-icu" if build.with? "icu4c"
     system "./configure", *args
+    system "make", "LIBS=-lpng"
     system "make install"
   end
 end
