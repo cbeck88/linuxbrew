@@ -29,7 +29,11 @@ class SdlImage < Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
-                          "--disable-sdltest"
+                          "--disable-sdltest",
+			  "--disable-png-shared"
+#                          "CFLAGS=-ggdb"
+
+
     system "make install"
   end
 end

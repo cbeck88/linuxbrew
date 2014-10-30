@@ -21,6 +21,8 @@ class Libpng < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
+#                          "CFLAGS=-ggdb"
+
     system "make install"
   end
 end
