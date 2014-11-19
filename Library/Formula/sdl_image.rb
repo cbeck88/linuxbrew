@@ -27,9 +27,13 @@ class SdlImage < Formula
     ENV.universal_binary if build.universal?
     inreplace 'SDL_image.pc.in', '@prefix@', HOMEBREW_PREFIX
 
+    ENV["PKG_CONFIG"] = "#{HOMEBREW_PREFIX}/bin/pkg-config"
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--disable-sdltest"
+			  "--disable-png-static"
+			  "--disable-jpg-static"
+			  "--disable-tif-static"
     system "make install"
   end
 end
