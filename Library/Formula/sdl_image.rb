@@ -6,6 +6,11 @@ class SdlImage < Formula
   sha1 '5e3e393d4e366638048bbb10d6a269ea3f4e4cf2'
   revision 1
 
+  # This patch fixes a bug in the SDL image configuration file, which causes it to be confused if libraries
+  # are supplied in both system dirs and environment variables, leading to it running configuration against
+  # the specified version while linking the binary with system-provided version. Linuxbrew issue #172.
+  patch :DATA
+
   bottle do
     cellar :any
     revision 1
@@ -33,3 +38,31 @@ class SdlImage < Formula
     system "make install"
   end
 end
+__END__
+diff --git a/configure b/configure
+index 62db8fc..57ecc84 100755
+--- a/configure
++++ b/configure
+@@ -12790,7 +12790,7 @@ find_lib()
+     else
+         host_lib_path="/usr/$base_libdir /usr/local/$base_libdir"
+     fi
+-    for path in $gcc_bin_path $gcc_lib_path $env_lib_path $host_lib_path; do
++    for path in $env_lib_path $gcc_bin_path $gcc_lib_path $host_lib_path; do
+         lib=`ls -- $path/$1 2>/dev/null | sort | sed 's/.*\/\(.*\)/\1/; q'`
+         if test x$lib != x; then
+             echo $lib
+diff --git a/configure.in b/configure.in
+index e7010e9..076c63b 100644
+--- a/configure.in
++++ b/configure.in
+@@ -103,7 +103,7 @@ find_lib()
+     else
+         host_lib_path="/usr/$base_libdir /usr/local/$base_libdir"
+     fi
+-    for path in $gcc_bin_path $gcc_lib_path $env_lib_path $host_lib_path; do
++    for path in $env_lib_path $gcc_bin_path $gcc_lib_path $host_lib_path; do
+         lib=[`ls -- $path/$1 2>/dev/null | sort | sed 's/.*\/\(.*\)/\1/; q'`]
+         if test x$lib != x; then
+             echo $lib
+
