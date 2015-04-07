@@ -34,7 +34,8 @@ class SdlImage < Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
-                          "--disable-sdltest"
+                          "--disable-sdltest",
+                          "LDFLAGS=-L#{HOMEBREW_PREFIX}/bin"
     system "make install"
   end
 end
